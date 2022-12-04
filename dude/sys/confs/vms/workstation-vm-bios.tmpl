@@ -1,0 +1,33 @@
+(use-modules (gnu)
+             (gnu services ssh)
+	     (dude srvcs workstation))
+
+(operating-system
+  (locale "en_US.utf8")
+  (timezone "Europe/Moscow")
+  (keyboard-layout (keyboard-layout "us"))
+  (host-name "workstation_vm")
+  (users (cons* (user-account
+                 (name "user")
+                 (comment "User")
+                 (group "users")
+                 (home-directory "/home/user")
+                 (supplementary-groups
+		  '("wheel" "netdev" "audio" "video")))
+		%base-user-accounts))
+  (packages (append %dude-workstation-packages
+                    (map (compose list specification->package+output)
+                         '("emacs-stuff"))))
+  (services (append
+             %dude-workstation-services
+             (list (service openssh-service-type))))
+  (bootloader
+   (bootloader-configuration
+    (bootloader grub-bootloader)
+    (targets '("/dev/sda"))
+    (keyboard-layout keyboard-layout)))
+  (file-systems (cons (file-system
+                        (device (file-system-label "my-root"))
+                        (mount-point "/")
+                        (type "ext4"))
+                      %base-file-systems)))
