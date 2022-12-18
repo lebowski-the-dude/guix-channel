@@ -6,8 +6,8 @@
   #:use-module (gnu packages emacs-xyz))
 
 (define-public emacs-stuff
-  (let ((commit "05884702fb19cffd606d15760697d436e23658ca")
-	(revision "1"))
+  (let ((revision "2")
+        (commit "9f0acca7414548c2398d11e61c9f1ecbeed5dfe4"))
     (package
       (name "emacs-stuff")
       (version (git-version "0.1" revision commit))

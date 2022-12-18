@@ -23,7 +23,7 @@
 ;;; You should have received a copy of the GNU General Public License
 ;;; along with GNU Guix.  If not, see <http://www.gnu.org/licenses/>.
 
-(define-module (dude sys install)
+(define-module (dude sys oldinstall)
   #:use-module (gnu)
   #:use-module (gnu system)
   #:use-module (gnu system setuid)
@@ -48,9 +48,6 @@
   #:use-module (gnu packages bootloaders)
   #:use-module (gnu packages certs)
   #:use-module (gnu packages compression)
-  #:use-module (gnu packages cryptsetup)
-  #:use-module (gnu packages disk)
-  #:use-module (gnu packages file-systems)
   #:use-module (gnu packages fonts)
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages guile)
@@ -58,11 +55,9 @@
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages texinfo)
   #:use-module (gnu packages xorg)
-
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (dude pkgs emacs)
-
   #:use-module (ice-9 match)
   #:use-module (srfi srfi-26)
   #:export (installation-os
@@ -81,7 +76,8 @@
             rockpro64-installation-os
             rk3399-puma-installation-os
             wandboard-installation-os
-            os-with-u-boot))
+            os-with-u-boot
+            %installation-services))
 
 ;;; Commentary:
 ;;;
@@ -137,10 +133,10 @@ manual."
                     ;; Change this process' locale so that command-line
                     ;; arguments to 'info' are properly encoded.
                     (catch #t
-                      (lambda ()
+		      (lambda ()
                         (setlocale LC_ALL locale)
                         (setenv "LC_ALL" locale))
-                      (lambda _
+		      (lambda _
                         ;; Sometimes LOCALE itself is not available.  In that
                         ;; case pick the one UTF-8 locale that's known to work
                         ;; instead of failing.
@@ -155,11 +151,11 @@ manual."
          (provision (list (symbol-append 'term- (string->symbol tty))))
          (requirement '(user-processes host-name udev virtual-terminal))
          (start #~(lambda* (#:optional (locale "en_US.utf8"))
-                    (fork+exec-command
-                     (list #$(log-to-info tty "documentation") locale)
-                     #:environment-variables
-                     `("GUIX_LOCPATH=/run/current-system/locale"
-                       "TERM=linux"))))
+		    (fork+exec-command
+		     (list #$(log-to-info tty "documentation") locale)
+		     #:environment-variables
+		     `("GUIX_LOCPATH=/run/current-system/locale"
+		       "TERM=linux"))))
          (stop #~(make-kill-destructor)))))
 
 (define %documentation-users
@@ -211,13 +207,13 @@ the given target.")
        (with-imported-modules (source-module-closure
                                '((gnu build install))
                                #:select? import-module?)
-         #~(case-lambda
-             ((target)
-              (mount-cow-store target #$%backing-directory)
-              target)
-             (else
-              ;; Do nothing, and mark the service as stopped.
-              #f))))
+	 #~(case-lambda
+	     ((target)
+	      (mount-cow-store target #$%backing-directory)
+	      target)
+	     (else
+	      ;; Do nothing, and mark the service as stopped.
+	      #f))))
       (stop #~(lambda (target)
                 ;; Delete the temporary directory, but leave everything
                 ;; mounted as there may still be processes using it since
@@ -236,23 +232,20 @@ the user's target storage device rather than on the RAM disk."
 
 
 (define (/etc/configuration-files _)
-  "Return a list of tuples representing configuration templates to add to
-/etc."
+  "Return a list of tuples representing configuration templates to add to /etc."
   (define directory
     (computed-file "configuration-templates"
                    (with-imported-modules '((guix build utils))
-                     #~(begin
-                         (mkdir #$output)
-                         (for-each (lambda (file target)
-                                     (copy-file file
-                                                (string-append #$output "/"
-                                                               target)))
-                                   '(#$(local-file "confs/bare-bones.tmpl")
-                                     #$(local-file "channels.tmpl")
+		     #~(begin
+			 (mkdir #$output)
+			 (for-each (lambda (file target)
+				     (copy-file file
+						(string-append #$output "/"
+							       target)))
+				   '(#$(local-file "channels.tmpl")
 				     #$(local-file "confs/workstation.tmpl")
 				     #$(local-file "confs/vms/workstation-vm-bios.tmpl"))
-                                   '("bare-bones.scm"
-                                     "channels.scm"
+				   '("channels.scm"
 				     "workstation.scm"
 				     "workstation-vm-bios.scm"))
                          #t))))
@@ -318,11 +311,10 @@ templates under @file{/etc/configuration}.")))
                                                    (%current-system))))
   ;; List of services of the installation system.
   (let ((motd (plain-file "motd" "
-\x1b[1;37mWelcome to the installation of GNU Guix!\x1b[0m
+\x1b[1;37mSup, Nerd!\x1b[0m
 
 \x1b[2m\
-Using this shell, you can carry out the installation process \"manually.\"
-Access documentation at any time by pressing Alt-F2.\x1b[0m
+Alt-F2 to access documentation.\x1b[0m
 ")))
     (define (normal-tty tty)
       (mingetty-service (mingetty-configuration (tty tty)
@@ -336,10 +328,11 @@ Access documentation at any time by pressing Alt-F2.\x1b[0m
      ;; Generic services
      (list (service virtual-terminal-service-type)
 
-           (service kmscon-service-type
-                    (kmscon-configuration
-                     (virtual-terminal "tty1")
-                     (login-program (installer-program))))
+	   (normal-tty "tty1")
+           ;; (service kmscon-service-type
+           ;;          (kmscon-configuration
+           ;;           (virtual-terminal "tty1")
+           ;;           (login-program (installer-program))))
 
            (login-service (login-configuration
                            (motd motd)))
@@ -365,21 +358,14 @@ Access documentation at any time by pressing Alt-F2.\x1b[0m
            ;; network.  It can be faster than fetching from remote servers.
            (service avahi-service-type)
 
-           ;; The build daemon.
+           ;; The build daemon.  Register the default substitute server key(s)
+           ;; as trusted to allow the installation process to use substitutes by
+           ;; default.
            (service guix-service-type
-                    (guix-configuration
-                     ;; Register the default substitute server key(s) as
-                     ;; trusted to allow the installation process to use
-                     ;; substitutes by default.
-                     (authorize-key? #t)
-
-                     (substitute-urls
-		      '("https://mirror.sjtu.edu.cn/guix/"
-			"https://bordeaux.guix.gnu.org"))
-
-                     ;; Install and run the current Guix rather than an older
-                     ;; snapshot.
-                     (guix (current-guix))))
+                    (guix-configuration (authorize-key? #t)
+                                        (substitute-urls
+					 '("https://mirror.sjtu.edu.cn/guix/"
+					   "https://bordeaux.guix.gnu.org"))))
 
            ;; Start udev so that useful device nodes are available.
            ;; Use device-mapper rules for cryptsetup & co; enable the CRDA for
@@ -414,11 +400,11 @@ Access documentation at any time by pressing Alt-F2.\x1b[0m
                      (permit-root-login #t)
                      ;; The root account is passwordless, so make sure
                      ;; a password is set before allowing logins.
-                     (allow-empty-passwords? #f)
+                     (allow-empty-passwords? #t)
                      (password-authentication? #t)
 
                      ;; Don't start it upfront.
-                     (%auto-start? #f)))
+                     (%auto-start? #t)))
 
            ;; Since this is running on a USB stick with a overlayfs as the root
            ;; file system, use an appropriate cache configuration.
@@ -470,40 +456,24 @@ Access documentation at any time by pressing Alt-F2.\x1b[0m
 \x1b[1;33mUse Alt-F2 for documentation.\x1b[0m
 ")
 
-(define %installer-disk-utilities
-  ;; A well-rounded set of packages for interacting with disks, partitions and
-  ;; file systems, included with the Guix installation image.
-  (list parted gptfdisk ddrescue
-        ;; We used to provide fdisk from GNU fdisk, but as of version 2.0.0a
-        ;; it pulls Guile 1.8, which takes unreasonable space; furthermore
-        ;; util-linux's fdisk is already available, in %base-packages-linux.
-        cryptsetup mdadm
-        dosfstools
-        btrfs-progs
-        e2fsprogs
-        f2fs-tools
-        jfsutils
-        xfsprogs))
-
 (define installation-os
   ;; The operating system used on installation images for USB sticks etc.
   (operating-system
-    (host-name "gnu")
-    (timezone "Europe/Paris")
+    (host-name "installer")
+    (timezone "Europe/Moscow")
     (locale "en_US.utf8")
     (name-service-switch %mdns-host-lookup-nss)
     (bootloader (bootloader-configuration
                  (bootloader grub-bootloader)
                  (targets '("/dev/sda"))))
     (label (string-append "GNU Guix installation "
-                          (or (getenv "GUIX_DISPLAYED_VERSION")
-                              (package-version guix))))
+                          (package-version guix)))
 
     ;; XXX: The AMD Radeon driver is reportedly broken, which makes kmscon
     ;; non-functional:
     ;; <https://lists.gnu.org/archive/html/guix-devel/2019-03/msg00441.html>.
     ;; Thus, blacklist it.
-    (kernel-arguments '("quiet" "modprobe.blacklist=radeon,amdgpu"))
+    (kernel-arguments '("quiet" "modprobe.blacklist=radeon"))
 
     (file-systems
      ;; Note: the disk image build code overrides this root file system with
@@ -536,7 +506,7 @@ Access documentation at any time by pressing Alt-F2.\x1b[0m
                   (name "guest")
                   (group "users")
                   (supplementary-groups '("wheel")) ; allow use of sudo
-                  (password "")
+                  (password "password")
                   (comment "Guest of GNU"))))
 
     (issue %issue)
@@ -552,17 +522,16 @@ Access documentation at any time by pressing Alt-F2.\x1b[0m
      (base-pam-services #:allow-empty-passwords? #t))
 
     (packages (append
-                (list emacs
-		      emacs-async
-		      emacs-stuff
-
-                      glibc         ; for 'tzselect' & co.
-                      fontconfig
-                      font-dejavu font-gnu-unifont
-                      grub          ; mostly so xrefs to its manual work
-                      nss-certs)    ; To access HTTPS, use git, etc.
-                %installer-disk-utilities
-                %base-packages))))
+               (list emacs
+		     emacs-async
+		     emacs-stuff
+		     glibc         ; for 'tzselect' & co.
+                     fontconfig
+                     font-dejavu font-gnu-unifont
+                     grub          ; mostly so xrefs to its manual work
+                     nss-certs)    ; To access HTTPS, use git, etc.
+               %base-packages-disk-utilities
+               %base-packages))))
 
 (define* (os-with-u-boot os board #:key (bootloader-target "/dev/mmcblk0")
                          (triplet "arm-linux-gnueabihf"))
@@ -572,10 +541,10 @@ installed to BOOTLOADER-TARGET (a drive), compiled for TRIPLET.
 If you want a serial console, make sure to specify one in your
 operating-system's kernel-arguments (\"console=ttyS0\" or similar)."
   (operating-system (inherit os)
-    (bootloader (bootloader-configuration
-                 (bootloader (bootloader (inherit u-boot-bootloader)
-                              (package (make-u-boot-package board triplet))))
-                 (targets (list bootloader-target))))))
+		    (bootloader (bootloader-configuration
+				 (bootloader (bootloader (inherit u-boot-bootloader)
+							 (package (make-u-boot-package board triplet))))
+				 (targets (list bootloader-target))))))
 
 (define* (embedded-installation-os bootloader bootloader-target tty
                                    #:key (extra-modules '()))

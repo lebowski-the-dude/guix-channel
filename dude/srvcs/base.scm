@@ -59,7 +59,8 @@
 		   '("https://mirror.sjtu.edu.cn/guix/"
 		     "https://bordeaux.guix.gnu.org"
                      "https://mirror.guix.org.cn"
-                     "http://ci.guix.trop.in"))))
+                     "http://ci.guix.trop.in"
+                     "https://substitutes.nonguix.org"))))
         (service nscd-service-type)
 
         (service rottlog-service-type)

@@ -6,8 +6,8 @@
   #:use-module (gnu packages golang))
 
 (define-public go-github-com-lebowski-the-dude-daemon
-  (let ((commit "a65f202dea87d17d423ca6d632333c2926c4053b")
-	(revision "0"))
+  (let ((revision "1")
+        (commit "3e8f7c5f4fdef6f1545db8479c5a6d357555a579"))
     (package
       (name "go-github-com-lebowski-the-dude-daemon")
       (version (git-version "0.1" revision commit))
