@@ -1,4 +1,5 @@
 (define-module (dude srvcs base)
+  #:use-module ((dude sys vars) #:prefix dude-vars:)
   #:use-module (gnu system)
   #:use-module (gnu packages)
   #:use-module (gnu services base)
@@ -55,12 +56,7 @@
         (service urandom-seed-service-type)
         (service guix-service-type
 		 (guix-configuration
-		  (substitute-urls
-		   '("https://mirror.sjtu.edu.cn/guix/"
-		     "https://bordeaux.guix.gnu.org"
-                     "https://mirror.guix.org.cn"
-                     "http://ci.guix.trop.in"
-                     "https://substitutes.nonguix.org"))))
+		  (substitute-urls dude-vars:%substitutes-urls)))
         (service nscd-service-type)
 
         (service rottlog-service-type)

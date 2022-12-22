@@ -318,11 +318,7 @@ templates under @file{/etc/configuration}.")))
                                                    (%current-system))))
   ;; List of services of the installation system.
   (let ((motd (plain-file "motd" "
-\x1b[1;37mWelcome to the installation of GNU Guix!\x1b[0m
-
-\x1b[2m\
-Using this shell, you can carry out the installation process \"manually.\"
-Access documentation at any time by pressing Alt-F2.\x1b[0m
+\x1b[1;37mSup, Dude!\x1b[0m
 ")))
     (define (normal-tty tty)
       (mingetty-service (mingetty-configuration (tty tty)
@@ -336,11 +332,6 @@ Access documentation at any time by pressing Alt-F2.\x1b[0m
      ;; Generic services
      (list (service virtual-terminal-service-type)
 
-           (service kmscon-service-type
-                    (kmscon-configuration
-                     (virtual-terminal "tty1")
-                     (login-program (installer-program))))
-
            (login-service (login-configuration
                            (motd motd)))
 
@@ -353,6 +344,7 @@ Access documentation at any time by pressing Alt-F2.\x1b[0m
            %configuration-template-service
 
            ;; A bunch of 'root' ttys.
+           (normal-tty "tty1")
            (normal-tty "tty3")
            (normal-tty "tty4")
            (normal-tty "tty5")

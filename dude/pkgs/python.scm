@@ -30,9 +30,9 @@
           (base32
            "1b0ligrswvz307bbx5jp8wnnqz52v5s4gcgakxy4i3jvccalm2if"))))
       (build-system python-build-system)
-      ;; tests fail for a reason i do not understand
-      ;; "ERROR docs/conf.py - FileNotFoundError", but this file is in the checkout
-      ;; probably investigating the source will help resolve it
+      ;; tests fail for a strange reason
+      ;; "ERROR docs/conf.py - FileNotFoundError",
+      ;; but this file is in the checkout
       (arguments
        '(#:tests? #f))
       (native-inputs
