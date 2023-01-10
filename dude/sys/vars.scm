@@ -10,6 +10,5 @@
   (append
    %base-substitutes-urls
    (list
-    "https://mirror.sjtu.edu.cn/guix"
     "http://ci.guix.trop.in"
     "https://substitutes.nonguix.org")))
