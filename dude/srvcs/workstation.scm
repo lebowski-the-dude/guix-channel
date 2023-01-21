@@ -24,8 +24,7 @@
   (append
    %dude-base-packages
    (map (compose list specification->package+output)
-        '("emacs-guix" "emacs-eglot" "emacs-company"
-          "python" "python-lsp-server"))))
+        '("emacs-guix"))))
 
 (define %dude-workstation-services
   (append

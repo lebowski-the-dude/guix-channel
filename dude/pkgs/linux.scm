@@ -26,6 +26,6 @@
 System on hardware which requires nonfree software to function.")))
 
 (define-public dude-linux-git
-  (corrupt-linux-git linux-libre-6.0 "v6.1-rc1"
+  (corrupt-linux-git linux-libre-6.1 "v6.1-rc1"
                      "0agzh4c7ldg9jqinm9zngzbj8rp24l4bk7slmb7xg1d87m01k8dz"
                      "https://github.com/torvalds/linux"))

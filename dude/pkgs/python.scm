@@ -14,7 +14,8 @@
   #:use-module (gnu packages python-crypto)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages check)
-  #:use-module (gnu packages time))
+  #:use-module (gnu packages time)
+  #:use-module (gnu packages game-development))
 
 (define-public python-tcod
   ;; todo
@@ -260,3 +261,26 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
         (base32
          "1xnnjzbfzpjia2arcl2v80g8c8fl05d0kaas8s8hg7bx0zj0s82n"))))
     ))
+
+(define-public python-pygame-widgets
+  (package
+    (name "python-pygame-widgets")
+    (version "1.0.0")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (pypi-uri "pygame-widgets" version))
+       (sha256
+        (base32
+         "1b20vgl8rx20gdllsfvx2bqp4gd77i8djpnsfv1fsxr2l6ds7jn0"))))
+    (build-system python-build-system)
+    (arguments
+       '(#:tests? #f))
+    (propagated-inputs
+       (list python-pygame))
+    (home-page "")
+    (synopsis
+     "")
+    (description
+     "")
+    (license #f)))

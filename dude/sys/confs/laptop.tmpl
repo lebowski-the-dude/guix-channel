@@ -1,4 +1,5 @@
 (use-modules (gnu) (gnu system nss)
+             (gnu services desktop)
 	     (nongnu packages linux)
              (nongnu system linux-initrd)
              (dude srvcs workstation))
@@ -39,6 +40,9 @@
 	    (map (compose list specification->package+output)
 		 '("emacs-stuff"))))
 
- (services %dude-workstation-services)
+ (services (append
+            %dude-workstation-services
+            (list
+             (service xfce-desktop-service-type))))
 
  (name-service-switch %mdns-host-lookup-nss))
