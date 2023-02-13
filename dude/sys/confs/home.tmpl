@@ -1,26 +1,29 @@
 (use-modules (gnu)
-	     (dude srvcs workstation))
+             (gnu services ssh)
+             (nongnu packages linux)
+             (nongnu system linux-initrd)
+	     (dude srvcs workstation)
+             (dude pkgs linux))
 
 (operating-system
-  (host-name "workstation")
+  (kernel dude-linux-git)
+  (initrd microcode-initrd)
+  (firmware (list linux-firmware))
+  (host-name "home")
   (timezone "Europe/Moscow")
   (locale "en_US.utf8")
 
-  ;; Use the UEFI variant of GRUB with the EFI System
-  ;; Partition mounted on /boot/efi.
   (bootloader (bootloader-configuration
                (bootloader grub-efi-bootloader)
                (targets '("/boot/efi"))))
 
-  ;; Assume the target root file system is labelled "my-root",
-  ;; and the EFI System Partition has UUID 1234-ABCD.
   (file-systems (append
                  (list (file-system
                          (device (file-system-label "my-root"))
                          (mount-point "/")
                          (type "ext4"))
                        (file-system
-                         (device (uuid "9E76-9C45" 'fat))
+                         (device (uuid "0C5B-5337" 'fat))
                          (mount-point "/boot/efi")
                          (type "vfat")))
                  %base-file-systems))
@@ -36,7 +39,9 @@
 	     %dude-workstation-packages
 	     (map (compose list specification->package+output)
 		  '("emacs-stuff"))))
-  (services %dude-workstation-services)
+  (services (append
+             %dude-workstation-services
+             (list (service openssh-service-type))))
 
   ;; Allow resolution of '.local' host names with mDNS.
   (name-service-switch %mdns-host-lookup-nss))
