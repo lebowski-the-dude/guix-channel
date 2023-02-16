@@ -27,7 +27,12 @@
        `(#:tests? #f
          #:phases
          (modify-phases %standard-phases
-           (delete 'configure))))
+           (delete 'configure)
+           (replace 'install
+             (lambda* (#:key outputs #:allow-other-keys)
+               (let* ((out (assoc-ref outputs "out"))
+                      (bin (string-append out "/bin")))
+                 (install-file "daemon" bin)))))))
       (home-page "")
       (synopsis "")
       (description "")
