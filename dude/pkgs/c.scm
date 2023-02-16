@@ -1,9 +1,9 @@
 (define-module (dude pkgs c)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:use-module (guix packages base)
   #:use-module (guix git-download)
-  #:use-module (guix build-system trivial))
+  #:use-module (guix build-system trivial)
+  #:use-module (gnu packages base))
 
 (define-public my-daemon
   (let ((revision "0")
@@ -33,10 +33,10 @@
                        (invoke (string-append coreutils "/sbin/pwd"))
                        ;; (invoke "ls -al")
                        ))))
-      
       (native-inputs
        (list coreutils))
       (home-page "")
       (synopsis "")
       (description "")
       (license license:gpl3+))))
+
