@@ -1,6 +1,7 @@
 (define-module (dude pkgs c)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
+  #:use-module (guix packages base)
   #:use-module (guix git-download)
   #:use-module (guix build-system trivial))
 
@@ -27,10 +28,14 @@
                      (use-modules (guix build utils)
                                   (srfi srfi-26))
                      (let* ((source (assoc-ref %build-inputs "source"))
-                            (output (assoc-ref %outputs "out")))
-                       (invoke "pwd")
-                       (invoke "ls -al")
+                            (output (assoc-ref %outputs "out"))
+                            (coreutils (assoc-ref %build-inputs "coreutils")))
+                       (invoke (string-append coreutils "/sbin/pwd"))
+                       ;; (invoke "ls -al")
                        ))))
+      
+      (native-inputs
+       (list coreutils))
       (home-page "")
       (synopsis "")
       (description "")
