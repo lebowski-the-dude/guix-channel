@@ -19,7 +19,7 @@
            (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1fc5qk3xnbiywp2j3kpb2zp3rrndvj1mrdiij4nkidyym9l2i53y"))))
+          (base32 "1slxrg3bjppv8kxngfhsxpy3sia592rfrdlhvvkxf0xycw4b3mb7"))))
       (build-system trivial-build-system)
       (arguments
        `(#:modules ((guix build utils))
