@@ -2,7 +2,7 @@
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
   #:use-module (guix git-download)
-  #:use-module (guix build-system trivial)
+  #:use-module (guix build-system gnu)
   #:use-module (gnu packages base)
   #:use-module (gnu packages commencement))
 
@@ -22,28 +22,7 @@
          (file-name (git-file-name name version))
          (sha256
           (base32 "1slxrg3bjppv8kxngfhsxpy3sia592rfrdlhvvkxf0xycw4b3mb7"))))
-      (build-system trivial-build-system)
-      (arguments
-       `(#:modules ((guix build utils))
-         #:builder (begin
-                     (use-modules (guix build utils)
-                                  (srfi srfi-26))
-                     (let* ((source (assoc-ref %build-inputs "source"))
-                            (output (assoc-ref %outputs "out"))
-                            (coreutils (assoc-ref %build-inputs "coreutils"))
-                            (gcc-toolchain (assoc-ref %build-inputs "gcc-toolchain")))
-                       (invoke (string-append coreutils "/bin/pwd"))
-                       (invoke (string-append coreutils "/bin/ls") "-al")
-                       (invoke (string-append coreutils "/bin/cp")
-                               (string-append source "/main.c") ".")
-                       (invoke (string-append coreutils "/bin/ls") "-al")
-                       (invoke (string-append gcc-toolchain "/bin/gcc")
-                               "-o" "daemon" "main.c")
-                       (invoke (string-append coreutils "/bin/ls") "-al")
-                       ))))
-      (native-inputs
-       (list coreutils
-             gcc-toolchain))
+      (build-system gnu-build-system)
       (home-page "")
       (synopsis "")
       (description "")
