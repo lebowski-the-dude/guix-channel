@@ -32,6 +32,9 @@
                             (coreutils (assoc-ref %build-inputs "coreutils")))
                        (invoke (string-append coreutils "/bin/pwd"))
                        (invoke (string-append coreutils "/bin/ls") "-al")
+                       (invoke (string-append coreutils "/bin/cp")
+                               (string-append source "/main.c") ".")
+                       (invoke (string-append coreutils "/bin/ls") "-al")
                        ))))
       (native-inputs
        (list coreutils))
