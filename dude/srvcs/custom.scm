@@ -6,6 +6,7 @@
   #:use-module (gnu packages admin)
   #:use-module (guix gexp)
   #:use-module (dude pkgs go)
+  #:use-module (dude pkgs c)
   #:export (my-daemon-service-type))
 
 (define (my-daemon-shepherd-service _)
@@ -28,5 +29,22 @@
                 (extensions
                  (list (service-extension shepherd-root-service-type
                                           my-daemon-shepherd-service)))
+                (default-value #f)
+                (description "test service")))
+
+(define (my-new-daemon-shepherd-service _)
+  (list (shepherd-service
+         (documentation "my dummy daemon")
+         (provision '(my-new-daemon))
+         (requirement '(networking))
+         (start #~(make-forkexec-constructor
+                   (list (string-append #$my-daemon "/bin/daemon"))))
+         (stop #~(make-kill-destructor)))))
+
+(define my-new-daemon-service-type
+  (service-type (name 'my-daemon)
+                (extensions
+                 (list (service-extension shepherd-root-service-type
+                                          my-new-daemon-shepherd-service)))
                 (default-value #f)
                 (description "test service")))
