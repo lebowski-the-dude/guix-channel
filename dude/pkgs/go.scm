@@ -19,7 +19,6 @@
            (url "https://github.com/lebowski-the-dude/daemon.git")
            (commit commit)))
          (file-name (git-file-name name version))
-         (modules '((guix build utils)))
          (sha256
           (base32 "1fc5qk3xnbiywp2j3kpb2zp3rrndvj1mrdiij4nkidyym9l2i53y"))))
       (build-system go-build-system)
