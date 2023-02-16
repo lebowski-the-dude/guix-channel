@@ -4,12 +4,12 @@
   #:use-module (guix git-download)
   #:use-module (guix build-system trivial))
 
-(define-public go-github-com-lebowski-the-dude-daemon
+(define-public my-daemon
   (let ((revision "0")
         (commit "c384694061c29c51c6f3a09709d706b00a137351"))
     (package
       (name "my-daemon")
-      (version (git-version "0.1" revision commit))
+      (version (git-version "0.0.0" revision commit))
       (source
        (origin
          (method git-fetch)
