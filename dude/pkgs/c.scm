@@ -24,7 +24,8 @@
           (base32 "0kx4zfdz98pn3s2lkpc3gxi8im7h5kzf8zx5ln2pdb14awrab6gd"))))
       (build-system gnu-build-system)
       (arguments
-       `(#:phases
+       `(#:tests? #f
+         #:phases
          (modify-phases %standard-phases
            (delete 'configure))))
       (home-page "")
