@@ -8,7 +8,7 @@
 
 (define-public my-daemon
   (let ((revision "0")
-        (commit "c384694061c29c51c6f3a09709d706b00a137351"))
+        (commit "974510c9418e9b7fc09850cbf5afb777f47c22d9"))
     (package
       (name "my-daemon")
       (version (git-version "0.1" revision commit))
