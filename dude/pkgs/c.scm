@@ -33,11 +33,13 @@
             (delete 'build)
             (add-before 'install 'compile
               (lambda _
-                (invoke "ls" "-al")))
+                (invoke "ls" "-al"))
+              #t)
             (replace 'install
               (lambda _
                 (invoke "./install"
-                        (string-append "--prefix=" #$output)))))))
+                        (string-append "--prefix=" #$output)))
+              #t))))
       (home-page "")
       (synopsis "")
       (description "")
