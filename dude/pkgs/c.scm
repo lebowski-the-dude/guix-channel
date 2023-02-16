@@ -3,7 +3,8 @@
   #:use-module (guix packages)
   #:use-module (guix git-download)
   #:use-module (guix build-system trivial)
-  #:use-module (gnu packages base))
+  #:use-module (gnu packages base)
+  #:use-module (gnu packages commencement))
 
 (define-public my-daemon
   (let ((revision "0")
@@ -29,15 +30,20 @@
                                   (srfi srfi-26))
                      (let* ((source (assoc-ref %build-inputs "source"))
                             (output (assoc-ref %outputs "out"))
-                            (coreutils (assoc-ref %build-inputs "coreutils")))
+                            (coreutils (assoc-ref %build-inputs "coreutils"))
+                            (gcc-toolchain (assoc-ref %build-inputs "gcc-toolchain")))
                        (invoke (string-append coreutils "/bin/pwd"))
                        (invoke (string-append coreutils "/bin/ls") "-al")
                        (invoke (string-append coreutils "/bin/cp")
                                (string-append source "/main.c") ".")
                        (invoke (string-append coreutils "/bin/ls") "-al")
+                       (invoke (string-append gcc-toolchain "/bin/gcc")
+                               "-o" "daemon" "main.c")
+                       (invoke (string-append coreutils "/bin/ls") "-al")
                        ))))
       (native-inputs
-       (list coreutils))
+       (list coreutils
+             gcc-toolchain))
       (home-page "")
       (synopsis "")
       (description "")
