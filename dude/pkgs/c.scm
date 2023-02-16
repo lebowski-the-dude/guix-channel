@@ -23,6 +23,21 @@
          (sha256
           (base32 "1slxrg3bjppv8kxngfhsxpy3sia592rfrdlhvvkxf0xycw4b3mb7"))))
       (build-system gnu-build-system)
+      (arguments
+       (list
+        #:modules ((guix build utils))
+        #:phases
+        #~(modify-phases %standard-phases
+            ;; No configure script and Makefile.
+            (delete 'configure)
+            (delete 'build)
+            (add-before 'install 'compile
+              (lambda _
+                (invoke "ls" "-al")))
+            (replace 'install
+              (lambda _
+                (invoke "./install"
+                        (string-append "--prefix=" #$output)))))))
       (home-page "")
       (synopsis "")
       (description "")
