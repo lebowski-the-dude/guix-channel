@@ -21,7 +21,7 @@
            (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "1slxrg3bjppv8kxngfhsxpy3sia592rfrdlhvvkxf0xycw4b3mb7"))))
+          (base32 "0kx4zfdz98pn3s2lkpc3gxi8im7h5kzf8zx5ln2pdb14awrab6gd"))))
       (build-system gnu-build-system)
       (arguments
        `(#:phases
