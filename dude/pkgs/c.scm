@@ -30,8 +30,8 @@
                      (let* ((source (assoc-ref %build-inputs "source"))
                             (output (assoc-ref %outputs "out"))
                             (coreutils (assoc-ref %build-inputs "coreutils")))
-                       (invoke (string-append coreutils "/sbin/pwd"))
-                       ;; (invoke "ls -al")
+                       (invoke (string-append coreutils "/bin/pwd"))
+                       (invoke (string-append coreutils "/bin/ls") "-al")
                        ))))
       (native-inputs
        (list coreutils))
