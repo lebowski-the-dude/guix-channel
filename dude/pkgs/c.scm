@@ -9,13 +9,13 @@
         (commit "c384694061c29c51c6f3a09709d706b00a137351"))
     (package
       (name "my-daemon")
-      (version (git-version "0.0.0" revision commit))
+      (version (git-version "0.1" revision commit))
       (source
        (origin
          (method git-fetch)
          (uri
           (git-reference
-           (url "https://github.com/lebowski-the-dude/guix-channel.git")
+           (url "https://github.com/lebowski-the-dude/test-daemon")
            (commit commit)))
          (file-name (git-file-name name version))
          (sha256
