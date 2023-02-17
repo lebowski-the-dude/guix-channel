@@ -7,7 +7,8 @@
   #:use-module (guix gexp)
   #:use-module (dude pkgs go)
   #:use-module (dude pkgs c)
-  #:export (my-daemon-service-type))
+  #:export (my-daemon-service-type)
+  #:export (my-new-daemon-service-type))
 
 (define (my-daemon-shepherd-service _)
   (let ((pid-file "/var/run/my-daemon.pid")
