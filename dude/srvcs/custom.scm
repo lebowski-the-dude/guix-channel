@@ -6,7 +6,7 @@
   #:use-module (gnu packages admin)
   #:use-module (guix gexp)
   #:use-module (dude pkgs go)
-  #:use-module (dude pkgs c)
+  #:use-module (dude pkgs python)
   #:export (my-daemon-service-type)
   #:export (my-new-daemon-service-type))
 
@@ -39,7 +39,7 @@
          (provision '(my-new-daemon))
          (requirement '(networking))
          (start #~(make-forkexec-constructor
-                   (list (string-append #$my-daemon "/bin/daemon"))
+                   (list (string-append #$python-my-daemon "/bin/my-daemon"))
                    #:pid-file "/var/run/my-daemon.pid"))
          (stop #~(make-kill-destructor)))))
 
