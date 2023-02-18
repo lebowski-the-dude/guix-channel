@@ -296,7 +296,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
        (origin
          (method git-fetch)
          (uri (git-reference
-               (url "https://github.com/hynek/hatch-fancy-pypi-readme")
+               (url "https://github.com/lebowski-the-dude/test-daemon.git")
                (commit commit)))
          (file-name (git-file-name name version))
          (sha256
