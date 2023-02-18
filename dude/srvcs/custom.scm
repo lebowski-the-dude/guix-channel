@@ -39,7 +39,8 @@
          (provision '(my-new-daemon))
          (requirement '(networking))
          (start #~(make-forkexec-constructor
-                   (list (string-append #$my-daemon "/bin/daemon"))))
+                   (list (string-append #$my-daemon "/bin/daemon"))
+                   #:pid-file "/var/run/my-daemon.pid"))
          (stop #~(make-kill-destructor)))))
 
 (define my-new-daemon-service-type
