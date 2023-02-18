@@ -303,6 +303,8 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
           (base32
            "15539gbcc9hjmncp1jrdrzfhxqmqj7gnrlm4dj57sdyrzw1ym38i"))))
       (build-system python-build-system)
+      (propagated-inputs
+       (list python-daemonize))
       (arguments
        '(#:tests? #f))
       (home-page "")
