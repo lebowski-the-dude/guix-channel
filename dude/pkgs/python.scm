@@ -288,7 +288,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
 
 (define-public python-my-daemon
   (let ((revision "0")
-        (commit "b34e75798d87999d32deaf70d24a6d120ef23488"))
+        (commit "d65a901d927dbc5bc6e357d15ebe0a9a82606f58"))
     (package
       (name "python-my-daemon")
       (version (git-version "0.0.0" revision commit))
@@ -303,8 +303,8 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
           (base32
            "0m5rwpak9ap9ww04r1wd0ygkbpy9yd0fs2q974qlp4ivzhy11qhg"))))
       (build-system python-build-system)
-      (arguments
-       '(#:tests? #f))
+      ;; (arguments
+      ;;  '(#:tests? #f))
       (home-page "")
       (synopsis
        "")
