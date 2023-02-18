@@ -284,3 +284,28 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
     (description
      "")
     (license #f)))
+
+
+(define-public python-my-daemon
+  (let ((revision "0")
+        (commit "b34e75798d87999d32deaf70d24a6d120ef23488"))
+    (package
+      (name "python-my-daemon")
+      (version (git-version "0.0.0" revision commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/hynek/hatch-fancy-pypi-readme")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32
+           "0v7j2xm72y4w568rb79y77ibf28hyynd2ld7gpb5fqn9hdlfxxi3"))))
+      (build-system python-build-system)
+      (home-page "")
+      (synopsis
+       "")
+      (description
+       "")
+      (license #f))))
