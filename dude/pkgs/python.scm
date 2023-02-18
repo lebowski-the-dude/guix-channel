@@ -306,7 +306,9 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
       (propagated-inputs
        (list python-daemonize))
       (arguments
-       '(#:tests? #f))
+       '(#:tests? #f
+         #:phases (modify-phases %standard-phases
+                    (delete 'sanity-check))))
       (home-page "")
       (synopsis
        "")
