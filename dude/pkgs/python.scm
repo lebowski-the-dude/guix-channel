@@ -12,6 +12,7 @@
   #:use-module (gnu packages python-check)
   #:use-module (gnu packages python-build)
   #:use-module (gnu packages python-crypto)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages check)
   #:use-module (gnu packages time)
@@ -306,7 +307,8 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
       (build-system python-build-system)
       (propagated-inputs
        (list python-daemonize
-             xrandr))
+             xrandr
+             coreutils))
       (arguments
        '(#:tests? #f
          #:phases (modify-phases %standard-phases
