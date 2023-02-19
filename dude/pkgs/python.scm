@@ -312,7 +312,14 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
       (arguments
        '(#:tests? #f
          #:phases (modify-phases %standard-phases
-                    (delete 'sanity-check))))
+                    (delete 'sanity-check)
+                    (add-after 'install 'fix-deps
+                      (lambda* (#:key inputs #:allow-other-keys)
+                        (let ((xrandr (assoc-ref inputs "xrandr")))
+                          (substitute* '("daemon/daemon.py")
+                            (("xrandr")
+                             (string-append xrandr "/bin/xrandr"))))))
+                    )))
       (home-page "")
       (synopsis
        "")
