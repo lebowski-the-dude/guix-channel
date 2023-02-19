@@ -41,7 +41,7 @@
            (requirement '(networking))
            (start #~(make-forkexec-constructor
                      (list (string-append #$python-my-daemon "/bin/my-daemon")
-                           "-pidFile" #$pid-file)
+                           "-p" #$pid-file)
                      #:pid-file #$pid-file))
            (stop #~(make-kill-destructor))))))
 
