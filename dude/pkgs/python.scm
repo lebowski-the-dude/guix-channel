@@ -315,7 +315,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
        '(#:tests? #f
          #:phases (modify-phases %standard-phases
                     (delete 'sanity-check)
-                    (add-before 'install 'fix-deps
+                    (add-before 'build 'fix-deps
                       (lambda* (#:key inputs #:allow-other-keys)
                         (let ((xrandr (assoc-ref inputs "xrandr"))
                               (gawk (assoc-ref inputs "gawk"))
