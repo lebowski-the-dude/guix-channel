@@ -15,6 +15,7 @@
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages check)
   #:use-module (gnu packages time)
+  #:use-module (gnu packages xorg)
   #:use-module (gnu packages game-development))
 
 (define-public python-tcod
@@ -304,7 +305,8 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
            "15539gbcc9hjmncp1jrdrzfhxqmqj7gnrlm4dj57sdyrzw1ym38i"))))
       (build-system python-build-system)
       (propagated-inputs
-       (list python-daemonize))
+       (list python-daemonize
+             xrandr))
       (arguments
        '(#:tests? #f
          #:phases (modify-phases %standard-phases
