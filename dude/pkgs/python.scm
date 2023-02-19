@@ -12,7 +12,7 @@
   #:use-module (gnu packages python-check)
   #:use-module (gnu packages python-build)
   #:use-module (gnu packages python-crypto)
-  #:use-module (gnu packages base)
+  #:use-module (gnu packages gawk)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages check)
   #:use-module (gnu packages time)
@@ -308,7 +308,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
       (propagated-inputs
        (list python-daemonize
              xrandr
-             coreutils))
+             gawk))
       (arguments
        '(#:tests? #f
          #:phases (modify-phases %standard-phases
@@ -318,7 +318,9 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
                         (let ((xrandr (assoc-ref inputs "xrandr")))
                           (substitute* '("daemon/daemon.py")
                             (("xrandr")
-                             (string-append xrandr "/bin/xrandr"))))))
+                             (string-append xrandr "/bin/xrandr"))
+                            (("awk")
+                             (string-append gawk "/bin/awk"))))))
                     )))
       (home-page "")
       (synopsis
