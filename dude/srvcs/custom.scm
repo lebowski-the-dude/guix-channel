@@ -34,14 +34,16 @@
                 (description "test service")))
 
 (define (my-new-daemon-shepherd-service _)
-  (list (shepherd-service
-         (documentation "my dummy daemon")
-         (provision '(my-new-daemon))
-         (requirement '(networking))
-         (start #~(make-forkexec-constructor
-                   (list (string-append #$python-my-daemon "/bin/my-daemon"))
-                   #:pid-file "/var/run/my-daemon.pid"))
-         (stop #~(make-kill-destructor)))))
+  (let ((pid-file "/var/run/my-daemon.pid"))
+    (list (shepherd-service
+           (documentation "my dummy daemon")
+           (provision '(my-new-daemon))
+           (requirement '(networking))
+           (start #~(make-forkexec-constructor
+                     (list (string-append #$python-my-daemon "/bin/my-daemon")
+                           "-pidFile" #$pid-file)
+                     #:pid-file #$pid-file))
+           (stop #~(make-kill-destructor))))))
 
 (define my-new-daemon-service-type
   (service-type (name 'my-daemon)
