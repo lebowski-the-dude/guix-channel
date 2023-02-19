@@ -12,6 +12,7 @@
   #:use-module (gnu packages python-check)
   #:use-module (gnu packages python-build)
   #:use-module (gnu packages python-crypto)
+  #:use-module (gnu packages base)
   #:use-module (gnu packages gawk)
   #:use-module (gnu packages libffi)
   #:use-module (gnu packages check)
@@ -308,7 +309,8 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
       (propagated-inputs
        (list python-daemonize
              xrandr
-             gawk))
+             gawk
+             grep))
       (arguments
        '(#:tests? #f
          #:phases (modify-phases %standard-phases
@@ -316,12 +318,15 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
                     (add-before 'install 'fix-deps
                       (lambda* (#:key inputs #:allow-other-keys)
                         (let ((xrandr (assoc-ref inputs "xrandr"))
-                              (gawk (assoc-ref inputs "gawk")))
+                              (gawk (assoc-ref inputs "gawk"))
+                              (grep (assoc-ref inputs "grep")))
                           (substitute* '("daemon/daemon.py")
                             (("xrandr")
                              (string-append xrandr "/bin/xrandr"))
                             (("awk")
-                             (string-append gawk "/bin/awk"))))))
+                             (string-append gawk "/bin/awk"))
+                            (("grep")
+                             (string-append grep "/bin/grep"))))))
                     )))
       (home-page "")
       (synopsis
