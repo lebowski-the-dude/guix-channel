@@ -2,6 +2,7 @@
   #:use-module (gnu services)
   #:use-module (gnu services shepherd)
   #:use-module (gnu services configuration)
+  #:use-module (gnu services dbus)
   #:use-module (gnu system shadow)
   #:use-module (gnu packages admin)
   #:use-module (guix gexp)
@@ -18,9 +19,10 @@
            (provision '(my-daemon))
            (requirement '(networking))
            (start #~(make-forkexec-constructor
-                     (list (string-append #$go-github-com-lebowski-the-dude-daemon "/bin/daemon")
-                           "-pidFile" #$pid-file
-                           "-logFile" #$log-file)
+                     (list
+                      (string-append
+                       #$go-github-com-lebowski-the-dude-daemon "/bin/daemon")
+                      "-pidFile" #$pid-file "-logFile" #$log-file)
                      #:pid-file #$pid-file
                      #:log-file #$log-file))
            (stop #~(make-kill-destructor))))))
@@ -38,7 +40,7 @@
     (list (shepherd-service
            (documentation "my dummy daemon")
            (provision '(my-new-daemon))
-           (requirement '(networking))
+           (requirement '(networking dbus-system udev user-processes))
            (start #~(make-forkexec-constructor
                      (list (string-append #$python-my-daemon "/bin/my-daemon")
                            "-p" #$pid-file)
