@@ -291,7 +291,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
 
 (define-public python-my-daemon
   (let ((revision "0")
-        (commit "5a97db8b4ce714867022af0db8e9aec1cb3be842"))
+        (commit "bc13ff7ed837d543cad3102b7a2fad3e1b787f83"))
     (package
       (name "python-my-daemon")
       (version (git-version "0.0.0" revision commit))
@@ -304,7 +304,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "1psxs03bqiayg3308n94rvsd8psapdyhzk5n147sgqbqc4cjdhwv"))))
+           "0b4b67bk4s5vqcgrcj95z1id7qkni5sa49i2ws0dyj9fi6l5i2fj"))))
       (build-system python-build-system)
       (propagated-inputs
        (list python-daemonize
@@ -323,11 +323,10 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
                           (substitute* '("daemon/daemon.py")
                             (("xrandr")
                              (string-append xrandr "/bin/xrandr"))
-                            ))))
-                    ;;         (("awk")
-                    ;;          (string-append gawk "/bin/awk"))
-                    ;;         (("grep")
-                    ;;          (string-append grep "/bin/grep"))))))
+                            (("awk")
+                             (string-append gawk "/bin/awk"))
+                            (("grep")
+                             (string-append grep "/bin/grep"))))))
          )))
       (home-page "")
       (synopsis
