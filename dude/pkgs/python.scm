@@ -313,24 +313,25 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
              grep))
       (arguments
        '(#:tests? #f
-         #:phases (modify-phases %standard-phases
-                    (delete 'sanity-check)
-                    (add-after 'unpack 'patch
-                      (lambda* (#:key inputs #:allow-other-keys)
-                        (let ((xrandr (assoc-ref inputs "xrandr"))
-                              (gawk (assoc-ref inputs "gawk"))
-                              (grep (assoc-ref inputs "grep")))
-                          (substitute* '("daemon/daemon.py")
-                            (("xrandr")
-                             (string-append xrandr "/bin/xrandr"))
-                            (("awk")
-                             (string-append gawk "/bin/awk"))
-                            (("grep")
-                             (string-append grep "/bin/grep"))))))
-                    )))
+         ;; #:phases (modify-phases %standard-phases
+         ;;            (delete 'sanity-check)
+         ;;            (add-after 'unpack 'patch
+         ;;              (lambda* (#:key inputs #:allow-other-keys)
+         ;;                (let ((xrandr (assoc-ref inputs "xrandr"))
+         ;;                      (gawk (assoc-ref inputs "gawk"))
+         ;;                      (grep (assoc-ref inputs "grep")))
+         ;;                  (substitute* '("daemon/daemon.py")
+         ;;                    (("xrandr")
+         ;;                     (string-append xrandr "/bin/xrandr"))
+         ;;                    (("awk")
+         ;;                     (string-append gawk "/bin/awk"))
+         ;;                    (("grep")
+         ;;                     (string-append grep "/bin/grep"))))))
+         ))
       (home-page "")
       (synopsis
        "")
       (description
        "")
       (license #f))))
+
