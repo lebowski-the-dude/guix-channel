@@ -304,7 +304,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
          (file-name (git-file-name name version))
          (sha256
           (base32
-           "0qp591hqd4lgi3mg2acz7b637gp8bsrj1612vd7n957pb6rwj9df"))))
+           "09qippkwnq1j1hf02c9ihz4ch3jy0pkxgff3v1qprsc3qq3920zs"))))
       (build-system python-build-system)
       (propagated-inputs
        (list python-daemonize
