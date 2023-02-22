@@ -1,7 +1,7 @@
 (define-module (dude pkgs go)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
-  #:use-module (guix packages xorg)
+  #:use-module (gnu packages xorg)
   #:use-module (gnu packages base)
   #:use-module (gnu packages gawk)
   #:use-module (guix git-download)
