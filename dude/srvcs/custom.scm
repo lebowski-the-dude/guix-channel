@@ -12,8 +12,8 @@
   #:export (my-new-daemon-service-type))
 
 (define (my-daemon-shepherd-service _)
-  (let ((pid-file "/var/run/my-daemon.pid")
-        (log-file "/var/log/my-daemon.log"))
+  (let ((pid-file "/var/run/sample.pid")
+        (log-file "/var/log/sample.log"))
     (list (shepherd-service
            (documentation "my dummy daemon")
            (provision '(my-daemon))
@@ -21,8 +21,7 @@
            (start #~(make-forkexec-constructor
                      (list
                       (string-append
-                       #$go-github-com-lebowski-the-dude-daemon "/bin/daemon")
-                      "-pidFile" #$pid-file "-logFile" #$log-file)
+                       #$go-github-com-lebowski-the-dude-test-daemon "/bin/test-daemon"))
                      #:pid-file #$pid-file
                      #:log-file #$log-file))
            (stop #~(make-kill-destructor))))))
