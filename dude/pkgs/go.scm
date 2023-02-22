@@ -10,7 +10,7 @@
 
 (define-public go-github-com-lebowski-the-dude-test-daemon
   (let ((revision "1")
-        (commit "e7ee1551de55f8ce5b3d709f60107761d635694f"))
+        (commit "ce265255f046d082503e9ccf2b46d03d04ea2846"))
     (package
       (name "go-github-com-lebowski-the-dude-test-daemon")
       (version (git-version "0.1" revision commit))
@@ -42,8 +42,10 @@
                               (grep (assoc-ref inputs "grep")))
                           (invoke "ls" "-al")
                           (substitute* "src/github.com/lebowski-the-dude/test-daemon/main.go"
-                            (("xrandr")
-                             (string-append xrandr "/bin/xrandr"))
+                            ;; (("xrandr")
+                            ;;  (string-append xrandr "/bin/xrandr"))
+                            (("awk")
+                             (string-append gawk "/bin/awk"))
                             )))))))
                             ;; (("awk")
                             ;;  (string-append gawk "/bin/awk"))
