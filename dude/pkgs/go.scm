@@ -33,20 +33,21 @@
              grep))
       (arguments
        `(#:import-path "github.com/lebowski-the-dude/test-daemon"
-         #:phases (modify-phases %standard-phases
-                    (delete 'sanity-check)
-                    (add-after 'unpack 'patch
-                      (lambda* (#:key inputs #:allow-other-keys)
-                        (let ((xrandr (assoc-ref inputs "xrandr"))
-                              (gawk (assoc-ref inputs "gawk"))
-                              (grep (assoc-ref inputs "grep")))
-                          (invoke "ls" "-al")
-                          (substitute* "src/github.com/lebowski-the-dude/test-daemon/main.go"
-                            ;; (("xrandr")
-                            ;;  (string-append xrandr "/bin/xrandr"))
-                            (("awk")
-                             (string-append gawk "/bin/awk"))
-                            )))))))
+         ;; #:phases (modify-phases %standard-phases
+         ;;            (delete 'sanity-check)
+         ;;            (add-after 'unpack 'patch
+         ;;              (lambda* (#:key inputs #:allow-other-keys)
+         ;;                (let ((xrandr (assoc-ref inputs "xrandr"))
+         ;;                      (gawk (assoc-ref inputs "gawk"))
+         ;;                      (grep (assoc-ref inputs "grep")))
+         ;;                  (invoke "ls" "-al")
+         ;;                  (substitute* "src/github.com/lebowski-the-dude/test-daemon/main.go"
+         ;;                    ;; (("xrandr")
+         ;;                    ;;  (string-append xrandr "/bin/xrandr"))
+         ;;                    (("awk")
+         ;;                     (string-append gawk "/bin/awk"))
+         ;;                    )))))))
+         ))
                             ;; (("awk")
                             ;;  (string-append gawk "/bin/awk"))
                             ;; (("grep")
