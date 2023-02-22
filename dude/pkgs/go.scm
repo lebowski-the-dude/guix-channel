@@ -40,7 +40,7 @@
                         (let ((xrandr (assoc-ref inputs "xrandr"))
                               (gawk (assoc-ref inputs "gawk"))
                               (grep (assoc-ref inputs "grep")))
-                          (substitute* '("daemon/daemon.py")
+                          (substitute* '("main.go")
                             (("xrandr")
                              (string-append xrandr "/bin/xrandr"))
                             )))))))
