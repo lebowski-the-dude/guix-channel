@@ -10,7 +10,7 @@
 
 (define-public go-github-com-lebowski-the-dude-test-daemon
   (let ((revision "1")
-        (commit "f6e1f056733e0ddadde8f77de57444bb103f1d6f"))
+        (commit "e7ee1551de55f8ce5b3d709f60107761d635694f"))
     (package
       (name "go-github-com-lebowski-the-dude-test-daemon")
       (version (git-version "0.1" revision commit))
