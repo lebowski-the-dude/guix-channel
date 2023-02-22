@@ -40,7 +40,7 @@
                         (let ((xrandr (assoc-ref inputs "xrandr"))
                               (gawk (assoc-ref inputs "gawk"))
                               (grep (assoc-ref inputs "grep")))
-                          (invoke "ls -al")
+                          (invoke "ls" "-al")
                           (substitute* "github.com/lebowski-the-dude/test-daemon/main.go"
                             (("xrandr")
                              (string-append xrandr "/bin/xrandr"))
