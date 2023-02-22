@@ -291,7 +291,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
 
 (define-public python-my-daemon
   (let ((revision "0")
-        (commit "ef6b9c6c33b91f7a01ef9713798138abd5c8a3b0"))
+        (commit "4022d6b4a2346e8d3f72970b047a9eb06529a5a7"))
     (package
       (name "python-my-daemon")
       (version (git-version "0.0.0" revision commit))
