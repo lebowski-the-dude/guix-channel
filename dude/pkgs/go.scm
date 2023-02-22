@@ -23,7 +23,7 @@
            (commit commit)))
          (file-name (git-file-name name version))
          (sha256
-          (base32 "0fd3sms1hqvy8cyk2z2sb1rjxpsbw3g9k3vi5z15g1w03nszdjz7"))))
+          (base32 "01jijrbibjddk0y7py297h3d4h6kcz8cr8amf65gadm285rhb60n"))))
       (build-system go-build-system)
       (native-inputs
        (list go-github-com-sevlyar-go-daemon))
