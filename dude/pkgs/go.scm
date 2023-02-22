@@ -10,7 +10,7 @@
 
 (define-public go-github-com-lebowski-the-dude-test-daemon
   (let ((revision "1")
-        (commit "ce265255f046d082503e9ccf2b46d03d04ea2846"))
+        (commit "959b196d57327bd6220451306204b16ea7a90b70"))
     (package
       (name "go-github-com-lebowski-the-dude-test-daemon")
       (version (git-version "0.1" revision commit))
@@ -33,21 +33,20 @@
              grep))
       (arguments
        `(#:import-path "github.com/lebowski-the-dude/test-daemon"
-         ;; #:phases (modify-phases %standard-phases
-         ;;            (delete 'sanity-check)
-         ;;            (add-after 'unpack 'patch
-         ;;              (lambda* (#:key inputs #:allow-other-keys)
-         ;;                (let ((xrandr (assoc-ref inputs "xrandr"))
-         ;;                      (gawk (assoc-ref inputs "gawk"))
-         ;;                      (grep (assoc-ref inputs "grep")))
-         ;;                  (invoke "ls" "-al")
-         ;;                  (substitute* "src/github.com/lebowski-the-dude/test-daemon/main.go"
-         ;;                    ;; (("xrandr")
-         ;;                    ;;  (string-append xrandr "/bin/xrandr"))
-         ;;                    (("awk")
-         ;;                     (string-append gawk "/bin/awk"))
-         ;;                    )))))))
-         ))
+         #:phases (modify-phases %standard-phases
+                    (delete 'sanity-check)
+                    (add-after 'unpack 'patch
+                      (lambda* (#:key inputs #:allow-other-keys)
+                        (let ((xrandr (assoc-ref inputs "xrandr"))
+                              (gawk (assoc-ref inputs "gawk"))
+                              (grep (assoc-ref inputs "grep")))
+                          (invoke "ls" "-al")
+                          (substitute* "src/github.com/lebowski-the-dude/test-daemon/main.go"
+                            ;; (("xrandr")
+                            ;;  (string-append xrandr "/bin/xrandr"))
+                            (("awk")
+                             (string-append gawk "/bin/awk"))
+                            )))))))
                             ;; (("awk")
                             ;;  (string-append gawk "/bin/awk"))
                             ;; (("grep")
