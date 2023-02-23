@@ -6,36 +6,13 @@
   #:use-module (gnu system shadow)
   #:use-module (gnu packages admin)
   #:use-module (guix gexp)
-  #:use-module (dude pkgs go)
   #:use-module (dude pkgs python)
   #:export (my-daemon-service-type)
   #:export (my-new-daemon-service-type))
 
-(define (my-daemon-shepherd-service _)
-  (let ((pid-file "/var/run/sample.pid")
-        (log-file "/var/log/sample.log"))
-    (list (shepherd-service
-           (documentation "my dummy daemon")
-           (provision '(my-daemon))
-           (requirement '(networking))
-           (start #~(make-forkexec-constructor
-                     (list
-                      (string-append
-                       #$go-github-com-lebowski-the-dude-test-daemon "/bin/test-daemon"))
-                     #:pid-file #$pid-file
-                     #:log-file #$log-file))
-           (stop #~(make-kill-destructor))))))
-
-(define my-daemon-service-type
-  (service-type (name 'my-daemon)
-                (extensions
-                 (list (service-extension shepherd-root-service-type
-                                          my-daemon-shepherd-service)))
-                (default-value #f)
-                (description "test service")))
 
 (define (my-new-daemon-shepherd-service _)
-  (let ((pid-file "/var/run/my-daemon.pid"))
+  (let ((pid-file "/var/run/daemon.pid"))
     (list (shepherd-service
            (documentation "my dummy daemon")
            (provision '(my-new-daemon))

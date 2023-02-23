@@ -291,7 +291,7 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
 
 (define-public python-my-daemon
   (let ((revision "0")
-        (commit "b817d44e5c5aef82e5bff2d1782adabc57123c93"))
+        (commit "c84af575462d5c20fbbe8e2db53ccad218660b09"))
     (package
       (name "python-my-daemon")
       (version (git-version "0.0.0" revision commit))
@@ -308,25 +308,17 @@ Includes the libtcodpy module for backwards compatibility with older projects.")
       (build-system python-build-system)
       (propagated-inputs
        (list python-daemonize
-             xrandr
-             gawk
-             grep))
+             monitor-checker))
       (arguments
        '(#:tests? #f
          #:phases (modify-phases %standard-phases
                     (delete 'sanity-check)
                     (add-after 'unpack 'patch
                       (lambda* (#:key inputs #:allow-other-keys)
-                        (let ((xrandr (assoc-ref inputs "xrandr"))
-                              (gawk (assoc-ref inputs "gawk"))
-                              (grep (assoc-ref inputs "grep")))
+                        (let ((monitor-checker (assoc-ref inputs "monitor-checker")))
                           (substitute* '("daemon/daemon.py")
-                            (("xrandr")
-                             (string-append xrandr "/bin/xrandr"))
-                            (("awk")
-                             (string-append gawk "/bin/awk"))
-                            (("grep")
-                             (string-append grep "/bin/grep"))))))
+                            (("MonitorChecker.sh")
+                             (string-append monitor-checker "/bin/MonitorChecker.sh"))))))
          )))
       (home-page "")
       (synopsis
