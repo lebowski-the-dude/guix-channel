@@ -33,9 +33,7 @@
          (begin
            (use-modules (guix build utils))
            ;; copy source
-           (copy-file (string-append (assoc-ref %build-inputs "source")
-                                     "/MonitorChecker.sh")
-                      ".")
+           (copy-recursively (assoc-ref %build-inputs "source") ".")
            ;; patch source
            (substitute* "MonitorChecker.sh"
              (("xrandr") (string-append xrandr "/bin/xrandr"))
