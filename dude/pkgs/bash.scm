@@ -28,21 +28,7 @@
              gawk
              grep))
       (arguments
-       `(#:phases (modify-phases %standard-phases
-                    (delete 'sanity-check)
-                    (add-after 'unpack 'patch
-                      (lambda* (#:key inputs #:allow-other-keys)
-                        (let ((xrandr (assoc-ref inputs "xrandr"))
-                              (gawk (assoc-ref inputs "gawk"))
-                              (grep (assoc-ref inputs "grep")))
-                          (substitute* "MonitorChecker.sh"
-                            (("xrandr")
-                             (string-append xrandr "/bin/xrandr"))
-                            (("awk")
-                             (string-append gawk "/bin/awk"))
-                            (("grep")
-                             (string-append grep "/bin/grep")))))))
-         #:builder
+       `(#:builder
          (begin
            (use-modules (guix build utils))
            ;; copy source
