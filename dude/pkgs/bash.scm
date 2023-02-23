@@ -21,7 +21,7 @@
 	       (commit commit)))
 	 (file-name (git-file-name name version))
 	 (sha256
-	  (base32 "1mayy270dkqsimmm7b5p85jbj9p53xyr42g19iz7ilym3gyigfqn"))))
+	  (base32 "1l1q98bwb28wx4p45wby7dns8lg2bbynwx9rqm2cr8rj62nd0pm1"))))
       (build-system trivial-build-system)
       (propagated-inputs
        (list xrandr
@@ -35,6 +35,11 @@
            (copy-file (string-append (assoc-ref %build-inputs "source")
                                      "/MonitorChecker.sh")
                       ".")
+           ;; patch source
+           (substitute* "MonitorChecker.sh"
+             (("xrandr") (string-append xrandr "/bin/xrandr"))
+             (("awk") (string-append gawk "/bin/awk"))
+             (("grep") (string-append grep "/bin/grep")))
            ;; install phase
            (install-file "MonitorChecker.sh" (string-append %output "/bin")))))
       (home-page "https://github.com/lebowski-the-dude/utils")
