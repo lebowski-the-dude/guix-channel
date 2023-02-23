@@ -11,7 +11,7 @@
   #:export (my-new-daemon-service-type))
 
 
-(define (my-new-daemon-shepherd-service _)
+(define (my-daemon-shepherd-service _)
   (let ((pid-file "/var/run/daemon.pid"))
     (list (shepherd-service
            (documentation "my dummy daemon")
@@ -23,10 +23,10 @@
                      #:pid-file #$pid-file))
            (stop #~(make-kill-destructor))))))
 
-(define my-new-daemon-service-type
+(define my-daemon-service-type
   (service-type (name 'my-daemon)
                 (extensions
                  (list (service-extension shepherd-root-service-type
-                                          my-new-daemon-shepherd-service)))
+                                          my-daemon-shepherd-service)))
                 (default-value #f)
                 (description "test service")))
