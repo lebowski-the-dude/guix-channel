@@ -28,8 +28,7 @@
              gawk
              grep))
       (arguments
-       `(#:import-path "github.com/lebowski-the-dude/test-daemon"
-         #:phases (modify-phases %standard-phases
+       `(#:phases (modify-phases %standard-phases
                     (delete 'sanity-check)
                     (add-after 'unpack 'patch
                       (lambda* (#:key inputs #:allow-other-keys)
