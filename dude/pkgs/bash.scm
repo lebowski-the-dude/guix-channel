@@ -36,9 +36,9 @@
            (copy-recursively (assoc-ref %build-inputs "source") ".")
            ;; patch source
            (substitute* "MonitorChecker.sh"
-             (("xrandr") (string-append (assoc-ref inputs "xrandr") "/bin/xrandr"))
-             (("awk") (string-append (assoc-ref inputs "gawk") "/bin/awk"))
-             (("grep") (string-append (assoc-ref inputs "grep") "/bin/grep")))
+             (("xrandr") (string-append (assoc-ref %build-inputs "xrandr") "/bin/xrandr"))
+             (("awk") (string-append (assoc-ref %build-inputs "gawk") "/bin/awk"))
+             (("grep") (string-append (assoc-ref %build-inputs "grep") "/bin/grep")))
            ;; install phase
            (install-file "MonitorChecker.sh" (string-append %output "/bin")))))
       (home-page "https://github.com/lebowski-the-dude/utils")
