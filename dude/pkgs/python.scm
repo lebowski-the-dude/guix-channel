@@ -18,7 +18,8 @@
   #:use-module (gnu packages check)
   #:use-module (gnu packages time)
   #:use-module (gnu packages xorg)
-  #:use-module (gnu packages game-development))
+  #:use-module (gnu packages game-development)
+  #:use-module (dude pkgs bash))
 
 (define-public python-tcod
   ;; todo
