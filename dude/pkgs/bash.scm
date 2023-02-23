@@ -28,7 +28,8 @@
              gawk
              grep))
       (arguments
-       `(#:builder
+       `(#:modules ((guix build utils))
+         #:builder
          (begin
            (use-modules (guix build utils))
            ;; copy source
