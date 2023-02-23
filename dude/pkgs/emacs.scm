@@ -20,7 +20,7 @@
 	       (commit commit)))
 	 (file-name (git-file-name name version))
 	 (sha256
-	  (base32 "1mayy270dkqsimmm7b5p85jbj9p53xyr42g19iz7ilym3gyigfqn"))))
+	  (base32 "08ap9024zwsznjjmczjkhksrrljzknz3csx9c9kxd2g9pb8sbvkn"))))
       (build-system emacs-build-system)
       (propagated-inputs
        (list emacs-async
